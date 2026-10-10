@@ -1,0 +1,9 @@
+{
+  "name": "flyrank-frontend-engineering",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A small settings-form workflow exercise",
+  "scripts": {
+    "test": "node --test"
+  }
+}
