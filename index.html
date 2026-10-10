@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account settings | Flyrank</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="settings.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="panel">
+    <a class="back-link" href="#main">Flyrank</a>
+    <section id="main" aria-labelledby="page-title">
+      <p class="eyebrow">YOUR ACCOUNT</p>
+      <h1 id="page-title">Account settings</h1>
+      <p class="intro">Manage the details associated with your account.</p>
+      <form id="settings-form" novalidate>
+        <div class="field">
+          <label for="name">Display name</label>
+          <input id="name" name="name" autocomplete="name" maxlength="60" required aria-describedby="name-error" value="Manab">
+          <p class="field-error" id="name-error"></p>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error" value="manab@example.com">
+          <p class="field-error" id="email-error"></p>
+        </div>
+        <div class="checkbox-field">
+          <input id="digest" name="digest" type="checkbox">
+          <label for="digest">Send me a weekly product digest</label>
+        </div>
+        <button type="submit">Save settings</button>
+        <p id="form-message" role="status" aria-live="polite" tabindex="-1"></p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
