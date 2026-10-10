@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account settings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="panel">
+    <h1>Account settings</h1>
+    <form id="settings-form">
+      <p><label>Display name <input id="name" required value="Manab"></label></p>
+      <p><label>Email <input id="email" type="email" required value="manab@example.com"></label></p>
+      <p><label><input id="digest" type="checkbox"> Send me a weekly digest</label></p>
+      <button type="submit">Save settings</button>
+      <p id="message"></p>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
