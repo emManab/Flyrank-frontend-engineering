@@ -1,0 +1,22 @@
+name: Settings validation tests
+
+on:
+  push:
+    branches:
+      - round-2-spec-and-tests
+  pull_request:
+    branches:
+      - round-2-spec-and-tests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run validation tests
+        run: npm test
