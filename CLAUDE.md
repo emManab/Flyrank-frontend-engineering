@@ -4,15 +4,14 @@
 Flyrank Frontend Engineering capstone.
 
 ## Technology
-The final frontend framework and tools have not been selected. Inspect the existing repository and ask before adding a framework or dependencies. Node.js may be used for development tooling where appropriate.
+The final frontend framework and tools have not been selected. Inspect the existing repository and ask before adding a framework or dependencies. This exercise uses browser-native HTML/CSS/JavaScript and Node's built-in test runner.
 
-## Coding Conventions
-- Write readable, maintainable code with descriptive names.
-- Prefer semantic HTML and accessible interactions.
-- Make layouts responsive across common viewport sizes.
-- Keep components modular and avoid unnecessary dependencies.
-- Follow the patterns already present in the repository.
-- Do not invent product behavior or claim unfinished features work.
+## Testable Project Rules
+- Every form control must have a programmatically associated `<label>`; placeholder text is not a label.
+- Validate trimmed values in a reusable function before persisting them. Cover blank input, malformed email, and documented length limits with automated tests.
+- For invalid form submissions, set `aria-invalid`, connect field errors with `aria-describedby`, announce the result through a status region, and focus the first invalid field.
+- Wrap browser storage writes in error handling; storage can be unavailable or full.
+- Keep validation logic independent of the DOM so it can be tested with `node --test`.
 
 ## Git Conventions
 - Use Conventional Commits with a type and concise description.
@@ -21,7 +20,6 @@ The final frontend framework and tools have not been selected. Inspect the exist
 
 ## AI Assistant Workflow
 - Inspect relevant files before editing.
-- Summarize the plan before broad or destructive changes.
-- Make the smallest change that satisfies the task.
-- Run available checks and report their actual results; do not claim checks passed unless they were run.
+- State a short plan before implementation.
+- After changes, run `npm test` and report the actual result; never claim tests passed unless they ran.
 - Ask for clarification if a product or technical requirement is ambiguous.
