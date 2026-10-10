@@ -2,17 +2,24 @@
 
 A responsive React catalogue inspired by the reference screenshots: a dark navigation bar, searchable movie/series cards, a favourites collection, and account creation/login screens.
 
-## Run it
+## Run it locally
 
 Requires Node.js 20 or newer.
 
 ```bash
-cd movie-app
 npm install
 npm run dev
 ```
 
 Production build: `npm run build`.
+
+## Public hosting
+
+The project is configured for GitHub Pages. The deployment workflow builds this Vite app and publishes `movie-app/dist` when changes are pushed to `react-media-catalog`.
+
+Expected URL: https://emmanab.github.io/Flyrank-frontend-engineering/
+
+The first deployment may require enabling GitHub Pages with **GitHub Actions** as the build/deployment source in the repository's Settings → Pages. Check the Actions run for the deployment result.
 
 ## Features
 
@@ -20,8 +27,8 @@ Production build: `npm run build`.
 - Filter the catalogue by genre.
 - Create a demo account and log in/out.
 - Save favourites in browser local storage.
-- Responsive card grid, loading-friendly remote poster images, and a readable fallback when a poster URL fails.
-- Form validation, accessible labels, status/error feedback, keyboard focus indicators, and reduced-motion support.
+- Responsive card grid, lazy-loaded remote poster images, and a readable fallback when a poster URL fails.
+- Form validation, accessible labels, error feedback, keyboard focus indicators, and reduced-motion support.
 
 ## Demo authentication note
 

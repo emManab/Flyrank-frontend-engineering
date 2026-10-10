@@ -6,12 +6,14 @@ on:
       - react-media-catalog
     paths:
       - 'movie-app/**'
+      - 'vercel.json'
       - '.github/workflows/movie-app.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'movie-app/**'
+      - 'vercel.json'
       - '.github/workflows/movie-app.yml'
 
 jobs:
