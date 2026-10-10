@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Flyrank-frontend-engineering/',
+  // Vercel serves this app at the domain root, unlike GitHub Pages project URLs.
+  base: '/',
 });
