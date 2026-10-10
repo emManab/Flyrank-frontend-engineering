@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const PRODUCTS = [
   {id:1,name:'Arc Wireless Headphones',category:'Tech',price:89,oldPrice:119,rating:4.9,reviews:284,badge:'BESTSELLER',tone:'lavender',emoji:'🎧',description:'Immersive sound, all-day comfort.'},
@@ -33,7 +33,7 @@ function Icon({name,size=18}) {
 }
 
 function ProductCard({product,favourite,onFavourite,onAdd}) {
-  return <article className="product-card">
+  return <article className="product-card" data-reveal>
     <div className={'product-art art-' + product.tone}>
       {product.badge && <span className="product-badge">{product.badge}</span>}
       <button className={'heart-icon ' + (favourite ? 'is-liked' : '')} onClick={() => onFavourite(product.id)} aria-label={favourite ? 'Remove from wishlist' : 'Add to wishlist'} aria-pressed={favourite}><Icon name="heart"/></button>
@@ -72,6 +72,32 @@ export default function App() {
   const [mobileMenu,setMobileMenu] = useState(false);
   const [notice,setNotice] = useState('');
   const [checkoutDone,setCheckoutDone] = useState(false);
+  const [scrolled,setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const nodes = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+      nodes.forEach(node => node.classList.add('is-visible'));
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+    nodes.forEach(node => observer.observe(node));
+    return () => observer.disconnect();
+  }, [category, query, sort, wishlistOnly]);
 
   const filtered = useMemo(() => {
     let list = PRODUCTS.filter(p => (category === 'All' || p.category === category) && (!wishlistOnly || wishlist.includes(p.id)) && (p.name + ' ' + p.category + ' ' + p.description).toLowerCase().includes(query.toLowerCase().trim()));
@@ -93,7 +119,7 @@ export default function App() {
 
   return <div className="site-shell">
     <div className="announcement">A little something extra — free shipping on orders over ₹2,999 <span>✳</span></div>
-    <header className="site-header">
+    <header className={"site-header " + (scrolled ? "is-scrolled" : "")}>
       <a className="wordmark" href="#top" aria-label="NOVA Market home"><span className="logo-symbol">n.</span><span>NOVA<span className="wordmark-light">MARKET</span></span></a>
       <nav className={'desktop-nav ' + (mobileMenu ? 'nav-open' : '')} aria-label="Shop categories">
         <a href="#collection" onClick={() => {chooseCategory('All');setMobileMenu(false);}}>Shop all</a>
@@ -109,15 +135,15 @@ export default function App() {
       </div>
     </header>
     <main id="top">
-      <section className="hero">
+      <section className="hero" data-reveal>
         <div className="hero-content"><span className="eyebrow"><i/> THE EVERYDAY EDIT · VOL. 04</span><h1>Good things.<br/><em>Better living.</em></h1><p>Thoughtfully picked pieces for the spaces you make, the places you go, and everything in between.</p><a className="button button-dark" href="#collection" onClick={() => {chooseCategory('All');}}>Explore the collection <Icon name="arrow" size={17}/></a><div className="hero-proof"><span className="proof-avatars"><b>A</b><b>M</b><b>J</b></span><span>Loved by <strong>12,000+</strong> everyday originals</span></div></div>
         <div className="hero-art" aria-label="Stylized product still life"><div className="sun-shape"/><div className="hero-orbit orbit-a"/><div className="hero-orbit orbit-b"/><div className="hero-object object-one">🎧</div><div className="hero-object object-two">☕</div><div className="hero-object object-three">👜</div><span className="hero-sticker">LESS, BUT<br/>BETTER. <b>↗</b></span><span className="hero-art-caption">OBJECTS FOR LIVING / 2026</span></div>
         <div className="hero-index">01 <span>—</span> 04</div>
       </section>
-      <section className="category-row" aria-label="Shop by category"><div className="category-intro"><span className="eyebrow">FIND YOUR THING</span><h2>Shop by mood.</h2></div><div className="category-list">{CATEGORIES.map(item => <button key={item.name} className={category === item.name && !wishlistOnly ? 'category-chip selected' : 'category-chip'} onClick={() => chooseCategory(item.name)}><span>{item.icon}</span>{item.name}<Icon name="arrow" size={13}/></button>)}</div></section>
-      <section id="collection" className="collection-section"><div className="collection-heading"><div><span className="eyebrow">{wishlistOnly ? 'YOUR SAVED PIECES' : 'THE GOOD STUFF'}</span><h2>{wishlistOnly ? 'Your wishlist.' : 'Made for your everyday.'}</h2><p>{wishlistOnly ? 'All the things you have your eye on.' : 'Useful, beautiful, and worth keeping around.'}</p></div><div className="collection-tools"><span>{filtered.length} pieces</span><label htmlFor="sort-products">Sort by <select id="sort-products" value={sort} onChange={e => setSort(e.target.value)}><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="rating">Top rated</option></select></label></div></div>
+      <section className="category-row" aria-label="Shop by category" data-reveal><div className="category-intro"><span className="eyebrow">FIND YOUR THING</span><h2>Shop by mood.</h2></div><div className="category-list">{CATEGORIES.map(item => <button key={item.name} className={category === item.name && !wishlistOnly ? 'category-chip selected' : 'category-chip'} onClick={() => chooseCategory(item.name)}><span>{item.icon}</span>{item.name}<Icon name="arrow" size={13}/></button>)}</div></section>
+      <section id="collection" className="collection-section" data-reveal><div className="collection-heading"><div><span className="eyebrow">{wishlistOnly ? 'YOUR SAVED PIECES' : 'THE GOOD STUFF'}</span><h2>{wishlistOnly ? 'Your wishlist.' : 'Made for your everyday.'}</h2><p>{wishlistOnly ? 'All the things you have your eye on.' : 'Useful, beautiful, and worth keeping around.'}</p></div><div className="collection-tools"><span>{filtered.length} pieces</span><label htmlFor="sort-products">Sort by <select id="sort-products" value={sort} onChange={e => setSort(e.target.value)}><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="rating">Top rated</option></select></label></div></div>
       {filtered.length ? <div className="product-grid">{filtered.map(product => <ProductCard key={product.id} product={product} favourite={wishlist.includes(product.id)} onFavourite={toggleWishlist} onAdd={addToCart}/>)}</div> : <div className="no-results"><span>✳</span><h3>Nothing on this shelf just yet.</h3><p>Try a different search or explore the full collection.</p><button className="button button-dark" onClick={() => {setQuery('');chooseCategory('All');}}>See everything <Icon name="arrow" size={16}/></button></div>}</section>
-      <section id="story" className="story-band"><div className="story-mark">n.</div><div><span className="eyebrow">A SMALLER KIND OF BETTER</span><h2>Buy less. Choose well.<br/><em>Make it mean more.</em></h2></div><p>We believe the everyday deserves a little more thought. So we look for considered design, useful details, and things that feel good to live with.</p><a href="#collection" aria-label="Explore products"><Icon name="arrow" size={22}/></a></section>
+      <section id="story" className="story-band" data-reveal><div className="story-mark">n.</div><div><span className="eyebrow">A SMALLER KIND OF BETTER</span><h2>Buy less. Choose well.<br/><em>Make it mean more.</em></h2></div><p>We believe the everyday deserves a little more thought. So we look for considered design, useful details, and things that feel good to live with.</p><a href="#collection" aria-label="Explore products"><Icon name="arrow" size={22}/></a></section>
     </main>
     <footer className="site-footer"><a className="wordmark footer-mark" href="#top"><span className="logo-symbol">n.</span><span>NOVA<span className="wordmark-light">MARKET</span></span></a><span>Considered essentials. Everyday stories.</span><span>© 2026 NOVA Market</span><a href="#top">Back to top ↑</a></footer>
     {notice && <div className="toast" role="status"><Icon name="check" size={17}/>{notice}</div>}
